@@ -1,0 +1,23 @@
+.container {
+  img {
+    margin-bottom: 1rem;
+  }
+  .info {
+    display: flex;
+    justify-content: space-between;
+    .categories {
+      display: flex;
+      justify-content: space-between;
+      p {
+        border: 1px solid #57d0d4;
+        border-radius: 3px;
+        color: #57d0d4;
+        padding: 0.3em 0.5em;
+        margin: 0;
+        &:first-child {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}

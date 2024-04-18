@@ -1,0 +1,55 @@
+.contactBox {
+  display: flex;
+  justify-content: center;
+}
+
+label {
+  width: 200px;
+}
+
+.w-full {
+  max-width: 400px;
+  width: 100%;
+}
+
+input,
+textarea {
+  border-color: #dfdfdf;
+  border-radius: 5px;
+  border-width: 1px;
+  padding: 2rem;
+  max-width: 100%;
+  width: 100%;
+}
+
+.btnArea {
+  display: flex;
+  justify-content: center;
+  margin-right: auto;
+  margin-bottom: 2rem;
+  margin-left: auto;
+  max-width: 50%;
+  width: 250px;
+  button {
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    padding: 1rem 2rem;
+    &.submit {
+      background-color: #0f1122;
+      color: #fff;
+      margin-right: 2rem;
+    }
+    &.clear {
+      background-color: #e7e7e7;
+    }
+  }
+}
+
+.errorMessage {
+  color: rgb(204, 10, 10);
+}
+
+.alignCenter {
+  text-align: center;
+}
