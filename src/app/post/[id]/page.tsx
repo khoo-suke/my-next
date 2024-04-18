@@ -7,7 +7,7 @@ import { Post } from '../../components/layouts/Post/Post';
 import Image from 'next/image';
 
 const PostDetail:React.FC = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
