@@ -1,0 +1,17 @@
+.sidebar {
+  background-color: #eee;
+  height: 100vh;
+  max-width: 300px;
+  width: 30%;
+  ul {
+    li {
+      .list {
+        display: block;
+        padding: 2rem;
+        &:hover {
+          background-color: #d3e1e9;
+        }
+      }
+    }
+  }
+}

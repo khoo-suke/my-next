@@ -3,16 +3,21 @@
 import { useEffect, useState } from "react";
 import styles from './styles/ListPost.module.scss';
 import Link from 'next/link';
-import { Post } from './components/layouts/Post/Post';
+import { MicroCmsPost } from './components/layouts/Post/Post';
 
-const ListPost:React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+export default function ListPost() {
+  const [posts, setPosts] = useState<MicroCmsPost[]>([]);
 
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch("https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts")
+      const res = await fetch('https://abdaepboet.microcms.io/api/v1/posts', {
+      headers: {
+        'X-MICROCMS-API-KEY': process.env.NEXT_PUBLIC_MICROCMS_API_KEY as string,
+      },
+    })
       const data = await res.json()
-      setPosts(data.posts)
+      console.log(data)
+      setPosts(data.contents)
     }
 
     fetcher()
@@ -20,32 +25,32 @@ const ListPost:React.FC = () => {
 
   return (
     <>
-      {posts.map(elem => (
-        <div className={styles.home_container} key={elem.id}>
+      {posts.map((post) => (
+        <div className={styles.home_container} key={post.id}>
           <ul>
             <li>
-              <Link href={`post/${elem.id}`}>
+              <Link href={`/posts/${post.id}`}>
                 <div className={styles.home_inner}>
                   <div className={styles.home_info}>
                     <div className={styles.home_date}>
-                      {elem.createdAt.substring(0, 10).replace(/-/g, '/')}
+                      {new Date(post.createdAt).toLocaleDateString()}
                     </div>
                     <div className={styles.home_categories}>
-                      {elem.categories.map(category => (
-                        <p key={category}>{category}</p>
+                      {post.categories.map(category => (
+                        <p key={category.id}>{category.name}</p>
                       ))}
                     </div>
                   </div>
-                  <h2>{elem.title}</h2>
-                  <div dangerouslySetInnerHTML={{ __html: `${elem.content.substring(0, 60)}${elem.content.length > 60 ? '…' : ''}` }} />
+                  <h2>{post.title}</h2>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: post.content }}
+                  />
                 </div>
               </Link>
             </li>
           </ul>
         </div>
-      ))};
+      ))}
     </>
   );
 }
-
-export default ListPost;
