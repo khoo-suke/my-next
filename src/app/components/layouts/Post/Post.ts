@@ -1,13 +1,16 @@
+import { Category } from './Category'
+
 export type Post = {
   id: number,
-  thumbnailUrl: string,
-  categories: string[],
   title: string,
-  createdAt: string,
   content: string,
+  thumbnailUrl: string,
+  createdAt: string,
+  updatedAt:string,
+  postCategories: { category: Category }[],
 }
 
-export interface MicroCmsPost {
+export type MicroCmsPost = {
   id: string,
   title: string,
   content: string,
