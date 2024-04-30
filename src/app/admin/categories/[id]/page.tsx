@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Sidebar from '@/app/components/layouts/Sidebar/Sidebar';
 import { Post } from '../../../components/layouts/Post/Post';
-import '../../styles/Admin.scss'
+import '../../../styles/Admin.scss'
 
 
 export default function Admin() {
@@ -28,17 +28,20 @@ export default function Admin() {
           <div className="title mb-10">
             <h2>カテゴリー編集</h2>
           </div>
-        </div>
-        <div className="mb-10">
+          <div className="mb-10">
+            <label className="block">
+              カテゴリー名
+            </label>
             <input type="text" name="text"/>
-        </div>
-        <div className="btnArea">
-          <Link className="update" href={`/admin/categories/new/`} >
-            更新
-          </Link>
-          <Link className="delete" href={`/admin/categories/new/`} >
-            削除
-          </Link>
+          </div>
+          <div className="btnArea">
+            <Link className="update" href={`/admin/categories/new/`} >
+              更新
+            </Link>
+            <Link className="delete" href={`/admin/categories/new/`} >
+              削除
+            </Link>
+          </div>
         </div>
       </div>
     </>

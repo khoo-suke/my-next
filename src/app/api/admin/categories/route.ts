@@ -7,13 +7,13 @@ const prisma = new PrismaClient()
 // GET
 export const GET = async (request: NextRequest) => {
   try {
-    const posts = await prisma.post.findMany({
+    const categories = await prisma.category.findMany({
       orderBy: {
         createdAt: 'desc',
       },
     })
 
-    return NextResponse.json({ stateus: 'OK', posts: posts }, { status: 200 })
+    return NextResponse.json({ status: 'OK', categories }, { status: 200 })
   } catch (error) {
     if (error instanceof Error)
       return NextResponse.json({ status: error.message }, { status: 400 })

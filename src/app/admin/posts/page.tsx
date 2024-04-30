@@ -7,7 +7,7 @@ import { Post } from '../../components/layouts/Post/Post';
 import '../../styles/Admin.scss'
 
 
-export default function Admin() {
+export default function Page() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
@@ -25,22 +25,22 @@ export default function Admin() {
       <div className="wrapper">
         <Sidebar/>
         <div className="main">
-          <div className="title">
+          <div className="title mb-5">
             <h2>記事一覧</h2>
             <Link className="button" href={`/admin/posts/new`} >
               新規作成
             </Link>
+          </div>
+          {posts.map((post) => (
+            <div  className="list">
+              <Link href={`/admin/posts/${post.id}`} >
+                {post.title}
+                <div className="text-gray-500">
+                    {new Date(post.createdAt).toLocaleDateString()}
+                </div>
+              </Link>
             </div>
-        {posts.map((post) => (
-          <div className=''>
-          <Link href={`/admin/posts/${post.id}`} >
-              {post.title}
-              <div className="text-gray-500">
-                  {new Date(post.createdAt).toLocaleDateString()}
-              </div>
-          </Link>
-        </div>
-      ))}
+          ))}
         </div>
       </div>
     </>

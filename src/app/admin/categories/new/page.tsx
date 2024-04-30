@@ -10,7 +10,11 @@ export default function Admin () {
       <div className="wrapper">
         <Sidebar/>
         <div className="main">
-          <h2 className='mb-5'>カテゴリー新規作成</h2>
+          <div className='title mb-5'>
+            <h2>
+              カテゴリー新規作成
+            </h2>
+          </div>
           <div className="mb-10">
             <input type="text" name="text"/>
           </div>

@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import styles from './styles/ListPost.module.scss';
 import Link from 'next/link';
 import Sidebar from "@/app/components/layouts/Sidebar/Sidebar";
 import '../../../styles/Admin.scss'
