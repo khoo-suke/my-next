@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from './styles/ListPost.module.scss';
+import styles from './_styles/ListPost.module.scss';
 import Link from 'next/link';
-import { Post } from './components/layouts/Post/Post';
+import { Post } from './_components/Post/Post';
 
 export default function ListPost() {
   const [posts, setPosts] = useState<Post[]>([]);

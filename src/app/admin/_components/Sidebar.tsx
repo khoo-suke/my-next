@@ -1,4 +1,4 @@
-import './Sidebar.scss';
+import '../_styles/Sidebar.scss';
 import Link from 'next/link';
 
 const Sidebar:React.FC = () => {

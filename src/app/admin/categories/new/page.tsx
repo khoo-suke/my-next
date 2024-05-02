@@ -1,30 +1,50 @@
 "use client";
 
-import Link from 'next/link';
-import Sidebar from "@/app/components/layouts/Sidebar/Sidebar";
-import '../../../styles/Admin.scss'
+import '../../_styles/Admin.scss'
+import { useState } from 'react';
 
-export default function Admin () {
+export default function Page() {
+  const [name, setName] = useState('')
+  
+  const handleSubmit = async () => {
+
+    const res = await fetch(`/api/admin/categories`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    })
+
+    console.log(res)
+    alert('カテゴリー作成')
+  }
+
   return (
     <>
-      <div className="wrapper">
-        <Sidebar/>
-        <div className="main">
-          <div className='title mb-5'>
-            <h2>
-              カテゴリー新規作成
-            </h2>
-          </div>
-          <div className="mb-10">
-            <input type="text" name="text"/>
-          </div>
-          <div className="btnArea">
-            <Link className="make" href={`/admin/categories/new/`} >
-              作成
-            </Link>
-          </div>
-        </div>
+      <div className='title mb-5'>
+        <h2>
+          カテゴリー新規作成
+        </h2>
       </div>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-10">
+          <input
+            type="text"
+            id="categories"
+            defaultValue={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="btnArea">
+          <button
+            type="submit"
+            className="update"
+          >
+            作成
+          </button>
+        </div>
+      </form>
     </>
   );
 }

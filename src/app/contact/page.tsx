@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import '../styles/Contact.scss';
+import './_styles/Contact.scss';
 import { useForm } from "react-hook-form";
-import { ContactForm } from '../components/layouts/Contact/ContactForm';
+import { ContactForm } from './_components/ContactForm';
 
 const Contact: React.FC = () => {
   const defaultValues: ContactForm = {

@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import '../../styles/PostDetail.scss';
-import { Post } from '../../components/layouts/Post/Post';
+import '../_styles/PostDetail.scss';
+import { Post } from '../../_components/Post/Post';
 import Image from 'next/image';
 
 const PostDetail:React.FC = () => {

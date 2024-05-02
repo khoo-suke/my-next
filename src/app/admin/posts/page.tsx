@@ -2,9 +2,8 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import Sidebar from '@/app/components/layouts/Sidebar/Sidebar';
-import { Post } from '../../components/layouts/Post/Post';
-import '../../styles/Admin.scss'
+import { Post } from '../../_components/Post/Post';
+import '../_styles/Admin.scss'
 
 
 export default function Page() {
@@ -22,27 +21,22 @@ export default function Page() {
 
   return (
     <>
-      <div className="wrapper">
-        <Sidebar/>
-        <div className="main">
-          <div className="title mb-5">
-            <h2>記事一覧</h2>
-            <Link className="button" href={`/admin/posts/new`} >
-              新規作成
-            </Link>
-          </div>
-          {posts.map((post) => (
-            <div  className="list">
-              <Link href={`/admin/posts/${post.id}`} >
-                {post.title}
-                <div className="text-gray-500">
-                    {new Date(post.createdAt).toLocaleDateString()}
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
+      <div className="title mb-5">
+        <h2>記事一覧</h2>
+        <Link className="button" href={`/admin/posts/new`} >
+          新規作成
+        </Link>
       </div>
+      {posts.map((post) => (
+        <div  className="list">
+          <Link href={`/admin/posts/${post.id}`} >
+            {post.title}
+            <div className="text-gray-500">
+                {new Date(post.createdAt).toLocaleDateString()}
+            </div>
+          </Link>
+        </div>
+      ))}
     </>
   );
 }

@@ -25,6 +25,8 @@ export const GET = async (request: NextRequest) => {
       },
     })
 
+    console.log(posts)
+
     return NextResponse.json({ status: 'OK', posts: posts }, { status: 200 })
   } catch (error) {
     if (error instanceof Error)

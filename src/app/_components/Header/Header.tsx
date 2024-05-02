@@ -1,4 +1,4 @@
-import './Header.scss';
+import '../../_styles/Header.scss';
 import Link from 'next/link';
 
 const Header:React.FC = () => {

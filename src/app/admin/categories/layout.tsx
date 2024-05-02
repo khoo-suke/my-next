@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.scss";
-import Header from "./_components/Header/Header";
+import "../../globals.scss";
+import Sidebar from '@/app/admin/_components/Sidebar';
 
 export const metadata: Metadata = {
   title: "NextJS課題",
@@ -15,8 +15,12 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-      <Header/>
-        {children}
+      <div className="wrapper">
+          <Sidebar />
+          <div className="main">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   )

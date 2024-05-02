@@ -30,6 +30,8 @@ export const GET = async (
       },
     })
 
+    console.log(post)
+
     return NextResponse.json({ status: 'OK', post: post }, { status: 200 })
   } catch (error) {
     if (error instanceof Error)

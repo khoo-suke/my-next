@@ -23,9 +23,19 @@
     .list {
       border-bottom: 1px solid #ccc;
       padding-left: 0.5rem;
+      padding-top: 1rem;
       padding-bottom: 1rem;
     }
+    label {
+      margin-bottom: 0.2rem;
+    }
     input{
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      width: 100%;
+    }
+    textarea {
       border: 1px solid #ccc;
       border-radius: 5px;
       padding: 0.5rem 1rem;
