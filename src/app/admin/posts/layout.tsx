@@ -2,7 +2,6 @@
 
 import "../../globals.scss";
 import Sidebar from '@/app/admin/_components/Sidebar';
-import Header from "@/app/_components/Header/Header";
 
 export default function RootLayout({
   children,
