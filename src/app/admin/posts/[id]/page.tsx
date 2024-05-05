@@ -1,53 +1,105 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from 'next/navigation'
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  useEffect,
+  useState,
+} from "react";
+import { useParams } from "next/navigation";
 import { Category } from "@/app/_components/Category/Category";
 
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  thumbnailUrl: string;
+  postCategories: { category: Category }[];
+}
+
 export default function Page() {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [thumbnailUrl, setThumbnailUrl] = useState('')
-  const [categories, setCategories] = useState<Category[]>([])
-  const { id } = useParams()
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const { id } = useParams();
 
   //GET
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch(`/api/admin/posts/${id}`)
+      const res = await fetch(`/api/admin/posts/${id}`);
       const data = await res.json();
-      const { post } = data;
-      setTitle(post.title)
-      setContent(post.content)
-      setThumbnailUrl(post.thumbnailUrl)
-      setCategories(post.postCategories.map((cate: any) => cate.category))
-    }
+      const post: Post = data.post;
+      setTitle(post.title);
+      setContent(post.content);
+      setThumbnailUrl(post.thumbnailUrl);
+      setSelectedCategories(post.postCategories.map((pc) => pc.category));
+    };
 
-    fetcher()
-  }, [id])
+    fetcher();
+  }, [id]);
+
+  //GET
+  useEffect(() => {
+    const fetcher = async () => {
+      const res = await fetch(`/api/admin/categories`);
+      const data = await res.json();
+      setAllCategories(data.categories);
+    };
+
+    fetcher();
+  }, [id]);
 
   //PUT
-  const handleSubmit = async () => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     await fetch(`/api/admin/posts/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      
-      body: JSON.stringify({ title, content, thumbnailUrl, categories }),
-    })
-  }
+
+      body: JSON.stringify({
+        title,
+        content,
+        thumbnailUrl,
+        categories: selectedCategories,
+      }),
+    });
+  };
 
   //DELETE
   const handleDeletePost = async () => {
-
     const res = await fetch(`/api/admin/posts/${id}`, {
-      method: 'DELETE',
-    })
+      method: "DELETE",
+    });
 
-    console.log(res)
-    alert('記事削除')
-  }
+    console.log(res);
+    alert("記事削除");
+  };
+
+  const handleChangeCategory: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    // クリックされたカテゴリーのIDをvalueに格納
+    const value = e.target.value;
+
+    // 選択されているカテゴリーかどうかを判定
+    const isSelected = !!selectedCategories.find(
+      (category) => category.id === Number(value)
+    );
+
+    // 選択されているカテゴリーならselectedCategoriesから削除、そうでなければ追加
+    if (isSelected) {
+      setSelectedCategories(
+        selectedCategories.filter((category) => category.id !== Number(value))
+      );
+    } else {
+      const selectedCategory = allCategories.find(
+        (category) => category.id === Number(value)
+      );
+      setSelectedCategories([...selectedCategories, selectedCategory!]);
+    }
+  };
 
   return (
     <>
@@ -56,9 +108,7 @@ export default function Page() {
       </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-5">
-          <label className="block">
-            タイトル
-          </label>
+          <label className="block">タイトル</label>
           <input
             id="title"
             type="text"
@@ -67,9 +117,7 @@ export default function Page() {
           />
         </div>
         <div className="mb-5">
-          <label className="block">
-            内容
-          </label>
+          <label className="block">内容</label>
           <textarea
             id="content"
             className="block"
@@ -80,9 +128,7 @@ export default function Page() {
           />
         </div>
         <div className="mb-5">
-          <label className="block">
-            サムネイルURL
-          </label>
+          <label className="block">サムネイルURL</label>
           <input
             type="text"
             id="thumbnailUrl"
@@ -91,31 +137,24 @@ export default function Page() {
           />
         </div>
         <div className="mb-10">
-          <label className="block">
-            カテゴリー
-          </label>
+          <label className="block">カテゴリー</label>
           <select
-            // multiple
-            // value={categories}
-            // onChange={(e) => setCategories(e.target.value)}
+            multiple
+            value={selectedCategories.map((category) => String(category.id))}
+            onChange={handleChangeCategory}
           >
-          {categories.map(category => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
+            {allCategories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="btnArea">
-          <button type="submit"
-            className="update"
-          >
+          <button type="submit" className="update">
             更新
           </button>
-          <button type="button"
-            className="delete"
-            onClick={handleDeletePost}
-          >
+          <button type="button" className="delete" onClick={handleDeletePost}>
             削除
           </button>
         </div>
