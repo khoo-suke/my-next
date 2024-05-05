@@ -28,13 +28,12 @@ export default function Page() {
 
   //PUT
   const handleSubmit = async () => {
-
     await fetch(`/api/admin/posts/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-
+      
       body: JSON.stringify({ title, content, thumbnailUrl, categories }),
     })
   }
@@ -95,15 +94,17 @@ export default function Page() {
           <label className="block">
             カテゴリー
           </label>
-          {categories.map((category, index) => (
-            <div key={index}>
-            <input
-              type="text"
-              id="categories"
-              defaultValue={category.name}
-              />
-            </div>
+          <select
+            // multiple
+            // value={categories}
+            // onChange={(e) => setCategories(e.target.value)}
+          >
+          {categories.map(category => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
           ))}
+        </select>
         </div>
         <div className="btnArea">
           <button type="submit"

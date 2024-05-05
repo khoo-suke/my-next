@@ -1,11 +1,7 @@
-import type { Metadata } from "next";
-import "../../globals.scss";
-import Sidebar from '@/app/admin/_components/Sidebar';
+"use client";
 
-export const metadata: Metadata = {
-  title: "NextJS課題",
-  description: "NextJS課題です",
-};
+import "../globals.scss";
+import Sidebar from '@/app/admin/_components/Sidebar';
 
 export default function RootLayout({
   children,

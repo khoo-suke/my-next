@@ -29,12 +29,8 @@
     label {
       margin-bottom: 0.2rem;
     }
-    input{
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 0.5rem 1rem;
-      width: 100%;
-    }
+    input,
+    select,
     textarea {
       border: 1px solid #ccc;
       border-radius: 5px;
