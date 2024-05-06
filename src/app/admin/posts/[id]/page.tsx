@@ -1,40 +1,63 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  useEffect,
+  useState,
+} from "react";
 import { useParams } from 'next/navigation'
 import { Category } from "@/app/_components/Category/Category";
 
 export default function Page() {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [thumbnailUrl, setThumbnailUrl] = useState('')
-  const [categories, setCategories] = useState<Category[]>([])
-  const { id } = useParams()
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [selectCategories, setSelectCategories] = useState<Category[]>([]);
+  const { id } = useParams();
 
-  //GET
+  //GET 記事用
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch(`/api/admin/posts/${id}`)
+      const res = await fetch(`/api/admin/posts/${id}`);
       const data = await res.json();
       const { post } = data;
-      setTitle(post.title)
-      setContent(post.content)
-      setThumbnailUrl(post.thumbnailUrl)
-      setCategories(post.postCategories.map((cate: any) => cate.category))
+      setTitle(post.title);
+      setContent(post.content);
+      setThumbnailUrl(post.thumbnailUrl);
+      setSelectCategories(post.postCategories.map((cate: any) => cate.category));
     }
 
-    fetcher()
+    fetcher();
+  }, [id])
+
+  // GET カテゴリー用
+  useEffect(() => {
+    const fetcher = async () => {
+      const res = await fetch(`/api/admin/categories`);
+      const data = await res.json();
+      setAllCategories(data.categories);
+    }
+
+    fetcher();
   }, [id])
 
   //PUT
-  const handleSubmit = async () => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     await fetch(`/api/admin/posts/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       
-      body: JSON.stringify({ title, content, thumbnailUrl, categories }),
+      body: JSON.stringify({
+        title,
+        content,
+        thumbnailUrl,
+        categories: selectCategories,
+      }),
     })
   }
 
@@ -47,6 +70,25 @@ export default function Page() {
 
     console.log(res)
     alert('記事削除')
+  }
+
+  // SELECT
+  const handleChangeCategory: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    const value = e.target.value;
+    const isSelected = !!selectCategories.find(
+      (category) => category.id === Number(value)
+    );
+
+    if (isSelected) {
+      setSelectCategories(
+        selectCategories.filter((category) => category.id !== Number(value))
+      );
+    } else {
+      const selectCategory = allCategories.find(
+        (category) => category.id === Number(value)
+      );
+      setSelectCategories([...selectCategories, selectCategory!]);
+    }
   }
 
   return (
@@ -95,11 +137,11 @@ export default function Page() {
             カテゴリー
           </label>
           <select
-            // multiple
-            // value={categories}
-            // onChange={(e) => setCategories(e.target.value)}
+            multiple
+            value={selectCategories.map((category) => String(category.id))}
+            onChange={handleChangeCategory}
           >
-          {categories.map(category => (
+          {allCategories.map(category => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>

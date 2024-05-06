@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from 'react'
+import { FormEventHandler, useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { Category } from "@/app/_components/Category/Category";
 import '../../_styles/Admin.scss'
 
 export default function Page() {
@@ -21,7 +20,8 @@ export default function Page() {
   }, [id])
 
   //PUT
-  const handleSubmit = async () => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
 
     await fetch(`/api/admin/categories/${id}`, {
       method: 'PUT',
