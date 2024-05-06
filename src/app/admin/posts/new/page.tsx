@@ -126,7 +126,7 @@ import { Category } from "@/app/_components/Category/Category";
         <div className="btnArea">
           <button
             type="submit"
-            className="update"
+            className="delete"
           >
             追加
           </button>
