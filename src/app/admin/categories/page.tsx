@@ -29,8 +29,8 @@ export default function Page() {
         </Link>
       </div>
       {categories.map((category) => (
-        <div className="list">
-          <Link href={`/admin/categories/${category.id}`} key={category.id}>
+        <div className="list" key={category.id}>
+          <Link href={`/admin/categories/${category.id}`}>
             {category.name}
           </Link>
         </div>

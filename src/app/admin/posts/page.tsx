@@ -28,7 +28,7 @@ export default function Page() {
         </Link>
       </div>
       {posts.map((post) => (
-        <div  className="list">
+        <div className="list" key={post.id}>
           <Link href={`/admin/posts/${post.id}`} >
             {post.title}
             <div className="text-gray-500">

@@ -2,6 +2,7 @@
 
 import "../globals.scss";
 import Sidebar from '@/app/admin/_components/Sidebar';
+import "./_styles/Admin.scss"
 
 export default function RootLayout({
   children,

@@ -59,6 +59,8 @@ export default function Page() {
         categories: selectCategories,
       }),
     })
+
+    alert('更新完了')
   }
 
   //DELETE
