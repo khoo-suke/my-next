@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from './_styles/ListPost.module.scss';
 import Link from 'next/link';
-import { MicroCmsPost } from './_components/Post/Post';
+import { Post } from './_components/Post/Post';
 
 export default function ListPost() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -22,16 +22,12 @@ export default function ListPost() {
     <>
       {posts.map((post) => (
         <div className={styles.home_container} key={post.id}>
-      {posts.map((post) => (
-        <div className={styles.home_container} key={post.id}>
           <ul>
             <li>
-              <Link href={`/posts/${post.id}`}>
               <Link href={`/posts/${post.id}`}>
                 <div className={styles.home_inner}>
                   <div className={styles.home_info}>
                     <div className={styles.home_date}>
-                      {new Date(post.createdAt).toLocaleDateString()}
                       {new Date(post.createdAt).toLocaleDateString()}
                     </div>
                     <div className={styles.home_categories}>
