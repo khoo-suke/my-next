@@ -1,0 +1,69 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  .main {
+    padding: 2rem;
+    width: 70%;
+    .title {
+      display: flex;
+      justify-content: space-between;
+      align-self: center;
+      h2 {
+        font-size: 120%;
+        font-weight: bold;
+      }
+      .button {
+        background-color: #305bb8;
+        border-radius: 5px;
+        color: #fff;
+        padding: 0.3em 0.5em;
+      }
+    }
+    .list {
+      border-bottom: 1px solid #ccc;
+      padding-left: 0.5rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+    label {
+      margin-bottom: 0.2rem;
+    }
+    input,
+    select,
+    textarea {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      width: 100%;
+      option {
+        padding: 0.5em;
+      }
+    }
+    .btnArea {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      .update {
+        background-color: #ca3737;
+        border-radius: 2px;
+        color: #fff;
+        padding: 0.15em 0.5em;
+        margin-right: 1rem;
+      }
+      .delete {
+        background-color: #467cce;
+        border-radius: 2px;
+        color: #fff;
+        padding: 0.15em 0.5em;
+      }
+      .make {
+        background-color: #467cce;
+        border-radius: 2px;
+        color: #fff;
+        padding: 0.15em 0.5em;
+        margin-right: 1rem;
+      }
+    }
+  }
+}

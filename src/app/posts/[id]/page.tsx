@@ -2,27 +2,19 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import '../../styles/PostDetail.scss';
-import { MicroCmsPost } from '../../components/layouts/Post/Post';
+import '../_styles/PostDetail.scss';
+import { Post } from '../../_components/Post/Post';
 import Image from 'next/image';
 
 const PostDetail:React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [post, setPost] = useState<MicroCmsPost | null>(null);
+  const { id } = useParams();
+  const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch(
-        `https://abdaepboet.microcms.io/api/v1/posts/${id}`,
-        {
-          headers: {
-            'X-MICROCMS-API-KEY': process.env.NEXT_PUBLIC_MICROCMS_API_KEY as string,
-          },
-        },
-      );
-      const data = await res.json();
-      console.log(data);
-      setPost(data);
+      const res = await fetch(`/api/posts/${id}`);
+      const { post } = await res.json();
+      setPost(post);
     };
     fetcher();
   }, [id]);
@@ -32,14 +24,14 @@ const PostDetail:React.FC = () => {
   return (
     <>
       <div className="container">
-        <Image src={post.thmbnail.url} alt={post.title} height={400} width={800}/>
+        <Image src={post.thumbnailUrl} alt={post.title} height={400} width={800}/>
         <div className="info">
           <div className="date">
             {post.createdAt?.substring(0, 10).replace(/-/g, '/')}
           </div>
           <div className="categories">
-            {post.categories.map(category => (
-              <p key={category.id}>{category.name}</p>
+            {post.postCategories.map(category => (
+              <p key={category.category.id}>{category.category.name}</p>
             ))}
           </div>
         </div>

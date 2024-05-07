@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.scss";
-import Header from "./components/layouts/Header/Header";
+import Header from "./_components/Header/Header";
 
 export const metadata: Metadata = {
   title: "NextJS課題",
@@ -19,5 +19,5 @@ export default function RootLayout({
         {children}
       </body>
     </html>
-  );
+  )
 }
