@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
-
 const prisma = new PrismaClient()
 
 // GET
 export const GET = async (request: NextRequest) => {
+
   try {
     const posts = await prisma.post.findMany({
       include: {

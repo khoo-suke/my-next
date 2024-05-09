@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Category, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -47,7 +47,7 @@ export const PUT = async (
 ) => {
   const { id } = params
 
-  const { title, content, categories, thumbnailUrl } = await request.json()
+  const { title, content, categories, thumbnailImageKey } = await request.json()
 
   try {
     const post = await prisma.post.update({
@@ -57,7 +57,7 @@ export const PUT = async (
       data: {
         title,
         content,
-        thumbnailUrl,
+        thumbnailImageKey,
       },
     })
 

@@ -4,69 +4,107 @@ import '../../_styles/Admin.scss'
 import {
   useEffect,
   useState,
-  ChangeEventHandler
+  ChangeEventHandler,
+  ChangeEvent,
+  FormEventHandler,
 } from 'react'
-import { useParams } from 'next/navigation'
 import { Category } from "@/app/_components/Category/Category";
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
+import { supabase } from '@/utils/supabase';
+import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from "next/navigation"
 
+export default function Page() {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [selectCategories, setSelectCategories] = useState<Category[]>([]);
+  const { token } = useSupabaseSession();
+  const [thumbnailImageKey, setThumbnailImageKey] = useState('');
+  const router = useRouter();
 
   // POST
-  export default function Page() {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [thumbnailUrl, setThumbnailUrl] = useState(
-      'https://placehold.jp/800x400.png');
-    const [allCategories, setAllCategories] = useState<Category[]>([]);
-    const [selectCategories, setSelectCategories] = useState<Category[]>([]);
-    const { id } = useParams();
-  
-    const handleSubmit = async () => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    await fetch('/api/admin/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title,
+        content,
+        thumbnailImageKey,
+        categories: selectCategories,
+      }),
+  }
+  )
 
-      const res = await fetch('/api/admin/posts', {
-        method: 'POST',
+    router.replace('/admin/posts')
+    alert('記事作成')
+  }
+
+  // GET カテゴリー用
+  useEffect(() => {
+      if (!token) return
+      
+    const fetcher = async () => {
+      const res = await fetch(`/api/admin/categories`, {
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          content,
-          thumbnailUrl,
-          categories: selectCategories,
-        }),
-      })
-
-      console.log(res)
-      alert('記事作成')
-    }
-
-      // GET カテゴリー用
-    useEffect(() => {
-    const fetcher = async () => {
-      const res = await fetch(`/api/admin/categories`);
+          Authorization: token,
+        }
+      });
       const data = await res.json();
       setAllCategories(data.categories);
     }
 
     fetcher();
-  }, [id])
+  }, [token])
 
-    // SELECT
-    const handleChangeCategory: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    const value = e.target.value;
-    const isSelected = !!selectCategories.find(
+  // SELECT
+  const handleChangeCategory: ChangeEventHandler<HTMLSelectElement> = (e) => {
+  const value = e.target.value;
+  const isSelected = !!selectCategories.find(
+    (category) => category.id === Number(value)
+  );
+
+  if (isSelected) {
+    setSelectCategories(
+      selectCategories.filter((category) => category.id !== Number(value))
+    );
+  } else {
+    const selectCategory = allCategories.find(
       (category) => category.id === Number(value)
     );
-
-    if (isSelected) {
-      setSelectCategories(
-        selectCategories.filter((category) => category.id !== Number(value))
-      );
-    } else {
-      const selectCategory = allCategories.find(
-        (category) => category.id === Number(value)
-      );
-      setSelectCategories([...selectCategories, selectCategory!]);
+    setSelectCategories([...selectCategories, selectCategory!]);
     }
+  }
+
+  //画像設定
+  const handleImageChange = async(
+    event: ChangeEvent<HTMLInputElement>,
+  ): Promise<void> => {
+    if (!event.target.files || event.target.files.length == 0) {
+      return
+    }
+
+    const file = event.target.files[0]
+    const filePath = `private/${uuidv4()}`
+
+    const { data, error } = await supabase.storage
+      .from('post_thumbnail')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false,
+      })
+    
+    if (error) {
+      alert(error.message)
+      return
+    }
+
+    setThumbnailImageKey(data.path)
   }
 
   return (
@@ -98,13 +136,16 @@ import { Category } from "@/app/_components/Category/Category";
           />
         </div>
         <div className="mb-5">
-          <label className="block">
+          <label
+            htmlFor='thumbnailImageKey'
+            className="block">
             サムネイルURL
           </label>
           <input
-            type="text"
-            id="thumbnailUrl"
-            onChange={(e) => setThumbnailUrl(e.target.value)}
+            type="file"
+            id="thumbnailImageKey"
+            onChange={handleImageChange}
+            accept='image/*'
           />
         </div>
         <div className="mb-10">
@@ -116,7 +157,7 @@ import { Category } from "@/app/_components/Category/Category";
             value={selectCategories.map((category) => String(category.id))}
             onChange={handleChangeCategory}
           >
-          {allCategories.map(category => (
+          {allCategories && allCategories.map(category => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>

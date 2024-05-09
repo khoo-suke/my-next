@@ -1,10 +1,12 @@
 "use client";
 
 import '../../_styles/Admin.scss'
-import { useState } from 'react';
+import { useState } from 'react'
+import { useRouter } from "next/navigation"
 
 export default function Page() {
   const [name, setName] = useState('')
+  const router = useRouter();
   
   const handleSubmit = async () => {
 
@@ -16,7 +18,7 @@ export default function Page() {
       body: JSON.stringify({ name }),
     })
 
-    console.log(res)
+    router.replace('/admin/categories')
     alert('カテゴリー作成')
   }
 

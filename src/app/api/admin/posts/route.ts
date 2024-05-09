@@ -6,6 +6,7 @@ const prisma = new PrismaClient()
 
 // GET
 export const GET = async (request: NextRequest) => {
+
   try {
     const posts = await prisma.post.findMany({
       include: {
@@ -36,17 +37,17 @@ export const GET = async (request: NextRequest) => {
 
 
 // POST
-export const POST = async (request: Request, context: any) => {
+export const POST = async (request: NextRequest, context: any) => {
   try {
     const body = await request.json()
 
-    const { title, content, categories, thumbnailUrl } = body
+    const { title, content, categories, thumbnailImageKey } = body
 
     const data = await prisma.post.create({
       data: {
         title,
         content,
-        thumbnailUrl,
+        thumbnailImageKey,
       },
     })
 
@@ -65,8 +66,7 @@ export const POST = async (request: Request, context: any) => {
       id: data.id,
     })
   } catch (error) {
-    if (error instanceof Error) {
+    if (error instanceof Error)
       return NextResponse.json({ status: error.message }, { status: 400 })
-    }
   }
 }

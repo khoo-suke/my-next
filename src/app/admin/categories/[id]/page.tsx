@@ -3,21 +3,32 @@
 import { FormEventHandler, useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import '../../_styles/Admin.scss'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
+import { useRouter } from "next/navigation"
 
 export default function Page() {
-  const [name, setName] = useState('')
-  const { id } = useParams()
+  const [name, setName] = useState('');
+  const { id } = useParams();
+  const { token } = useSupabaseSession();
+  const router = useRouter();
   
   //GET
   useEffect(() => {
+    if(!token) return
+
     const fetcher = async () => {
-      const res = await fetch(`/api/admin/categories/${id}`)
+      const res = await fetch(`/api/admin/categories/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
       const { category } = await res.json()
       setName(category.name)
     }
 
     fetcher()
-  }, [id])
+  }, [token])
 
   //PUT
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -32,6 +43,7 @@ export default function Page() {
       body: JSON.stringify({ name })
     })
 
+    router.replace('/admin/categories')
     alert('カテゴリー更新')
   }
 
@@ -42,7 +54,7 @@ export default function Page() {
       method: 'DELETE',
     })
 
-    console.log(res)
+    router.replace('/admin/categories')
     alert('カテゴリー削除')
   }
 

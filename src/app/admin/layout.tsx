@@ -2,13 +2,17 @@
 
 import "../globals.scss";
 import Sidebar from '@/app/admin/_components/Sidebar';
-import "./_styles/Admin.scss"
+import "./_styles/Admin.scss";
+import { useRouteGuard } from "../_hooks/useRouteGuard";
+
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+  }) {
+  useRouteGuard()
+
   return (
     <html lang="ja">
       <body>

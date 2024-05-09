@@ -1,0 +1,1 @@
+export const COMMON_TITLE = "NextJS課題";
