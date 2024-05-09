@@ -1,6 +1,7 @@
 .sidebar {
   background-color: #eee;
-  height: 100vh;
+  height: auto;
+  min-height: 100vh;
   max-width: 300px;
   width: 30%;
   ul {
