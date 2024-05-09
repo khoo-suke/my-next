@@ -13,6 +13,8 @@ import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 import { supabase } from "@/utils/supabase";
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from "next/navigation"
+import Image from 'next/image';
+import { Post } from '@/app/_components/Post/Post';
 
 export default function Page() {
   const [title, setTitle] = useState('');
@@ -23,6 +25,8 @@ export default function Page() {
   const { token } = useSupabaseSession();
   const [thumbnailImageKey, setThumbnailImageKey] = useState(``);
   const router = useRouter();
+  const [post, setPost] = useState<Post | null>(null);
+  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<null | string>(null);
 
   //GET 記事用
   useEffect(() => {
@@ -141,6 +145,34 @@ export default function Page() {
     setThumbnailImageKey(data.path)
   }
 
+  // 画像表示
+  useEffect(() => {
+    const fetcher = async () => {
+      const res = await fetch(`/api/posts/${id}`);
+      const { post } = await res.json();
+      setPost(post);
+    };
+    fetcher();
+  }, [id]);
+
+  useEffect(() => {
+    if (!post) return;
+
+    if (!post?.thumbnailImageKey) return
+
+    const fetcher = async () => {
+      const {
+        data: { publicUrl },
+      } = await supabase.storage
+        .from('post_thumbnail')
+        .getPublicUrl(post.thumbnailImageKey)
+
+      setThumbnailImageUrl(publicUrl)
+    }
+
+    fetcher()
+  }, [post?.thumbnailImageKey])
+
   return (
     <>
       <div className="title mb-10">
@@ -184,7 +216,17 @@ export default function Page() {
             defaultValue={thumbnailImageKey}
             onChange={handleImageChange}
             accept="image/*"
+            className="mb-2"
           />
+          <p className="mb-2">現在のサムネイル画像</p>
+          {thumbnailImageUrl && (
+          <Image
+              src={thumbnailImageUrl}
+              alt="thumbnail"
+              width={400}
+              height={400}
+            />
+          )}
         </div>
         <div className="mb-10">
           <label className="block">
