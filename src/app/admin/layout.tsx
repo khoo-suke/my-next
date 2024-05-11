@@ -14,15 +14,11 @@ export default function RootLayout({
   useRouteGuard()
 
   return (
-    <html lang="ja">
-      <body>
       <div className="wrapper">
-          <Sidebar />
-          <div className="main">
-            {children}
-          </div>
+        <Sidebar />
+        <div className="main">
+          {children}
         </div>
-      </body>
-    </html>
+      </div>
   )
 }
