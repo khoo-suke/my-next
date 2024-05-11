@@ -10,7 +10,7 @@ export default function ListPost() {
 
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch('api/posts')
+      const res = await fetch('/api/posts')
       const { posts } = await res.json()
       setPosts(posts)
     }
@@ -36,10 +36,6 @@ export default function ListPost() {
                       ))}
                     </div>
                   </div>
-                  <h2>{post.title}</h2>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: post.content }}
-                  />
                   <h2>{post.title}</h2>
                   <div
                     dangerouslySetInnerHTML={{ __html: post.content }}

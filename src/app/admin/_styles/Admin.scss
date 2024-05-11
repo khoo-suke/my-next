@@ -25,6 +25,7 @@
       padding-left: 0.5rem;
       padding-top: 1rem;
       padding-bottom: 1rem;
+      
     }
     label {
       margin-bottom: 0.2rem;
@@ -38,6 +39,10 @@
       width: 100%;
       option {
         padding: 0.5em;
+      }
+      &#thumbnailImageKey{
+        border: none;
+        padding: 0.5rem 0;
       }
     }
     .btnArea {
